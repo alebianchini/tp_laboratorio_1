@@ -26,6 +26,7 @@ setbuf(stdout, NULL);
 	int opcion;
 	int respuestaSwitch;
 
+//Le muestro el menu al usuario y le solicito elegir una opcion.
 	do
 			{
 				respuestaSwitch = utn_getNumero(&opcion,"1-Ingresar primer entero\n2-Ingresar segundo entero\n3-Realizar calculos y mostrarlos en pantalla\n4-Salir\n","Error tiene que ser un numero de 1 a 4\n",1,4,3);
@@ -33,35 +34,35 @@ setbuf(stdout, NULL);
 				{
 					switch(opcion)
 					{
-						case 1:
+						case 1: //le pido al usuario el primer numero
 							if(utn_getEntero(&bufferA,"Numero?\n","Eso no es un numero\n",3) == 0)
 							{
 								a = bufferA;
 							}
 							break;
-						case 2:
+						case 2: //le pido al usuario el segundo numero
 							if(utn_getEntero(&bufferB,"Numero?\n","Eso no es un numero\n",3) == 0)
 							{
 								b = bufferB;
 							}
 							break;
-						case 3:
-							if(getSuma(&bufferSuma, a, b) == 0)
+						case 3: //realizo los calculos y los muestro en pantalla
+							if(getSuma(&bufferSuma, a, b) == 0)//suma
 							{
 								printf("El resultado de %d + %d es: %d\n", a, b, bufferSuma);
 							}
 
-							if(getResta(&bufferResta, a, b) == 0)
+							if(getResta(&bufferResta, a, b) == 0)//resta
 							{
 								printf("El resultado de %d - %d es: %d\n", a, b, bufferResta);
 							}
 
-							if(getProducto(&bufferProducto, a, b) == 0)
+							if(getProducto(&bufferProducto, a, b) == 0)//multiplicacion
 							{
 								printf("El resultado de %d * %d es: %d\n", a, b, bufferProducto);
 							}
 
-							if(getCociente(&bufferCociente, a, b) == 0)
+							if(getCociente(&bufferCociente, a, b) == 0)//division
 							{
 								printf("El resultado de %d / %d es: %.2f\n", a, b, bufferCociente);
 							}
@@ -71,7 +72,7 @@ setbuf(stdout, NULL);
 							}
 					}
 				}
-			}while(opcion != 4);
+			}while(opcion != 4);//salir
 
 	return EXIT_SUCCESS;
 }
