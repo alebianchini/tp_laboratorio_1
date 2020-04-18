@@ -13,6 +13,12 @@ static int esNumerica(char* cadena);
 static int getInt(int* pResultado);
 static int myGets(char* cadena, int longitud);
 
+/**
+* \brief Lee de stdin hasta que encuentra un '\n' o hasta que haya copiado en cadena un máximo de 'longitud - 1' caracteres.
+* \param cadena Puntero al espacio de memoria donde se copiara la cadena obtenida
+* \param longitud Define el tamaño de la cadena
+* \return Retorna 0 (EXITO) si se obtiene una cadena y -1 (ERROR) si no.
+*/
 static int myGets(char* cadena, int longitud)
 {
 	if(cadena != NULL && longitud >0 && fgets(cadena,longitud,stdin)==cadena)
@@ -27,6 +33,11 @@ static int myGets(char* cadena, int longitud)
 	return -1;
 }
 
+/**
+* \brief Verifica si la cadena ingresada es numerica
+* \param cadena Cadena de caracteres a ser analizada
+* \return Retorna 1 (vardadero) si la cadena es numerica y 0 (falso) si no lo es
+*/
 static int esNumerica(char* cadena)
 {
 	int i=0;
@@ -50,6 +61,11 @@ static int esNumerica(char* cadena)
 	return retorno;
 }
 
+/**
+* \brief Verifica si la cadena ingresada es numerica
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
+*/
 static int getInt(int* pResultado)
 {
 	int retorno=-1;
@@ -66,6 +82,16 @@ static int getInt(int* pResultado)
 	return retorno;
 }
 
+/**
+* \brief Solicita un numero al usuario, luego de verificarlo devuelve el resultado
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param mensaje Es el mensaje a ser mostrado
+* \param mensajeError Es el mensaje de Error a ser mostrado
+* \param minimo Es el numero maximo a ser aceptado
+* \param maximo Es el minimo minimo a ser aceptado
+* \param reintentos es el numero de reintentos que tendra el usuario
+* \return Retorna 0 si se obtuvo el numero y -1 si no
+*/
 int utn_getNumero(int* pResultado, char* mensaje, char* mensajeError, int minimo, int maximo, int reintentos)
 {
 	int bufferInt;
@@ -88,6 +114,14 @@ int utn_getNumero(int* pResultado, char* mensaje, char* mensajeError, int minimo
 	return retorno;
 }
 
+/**
+* \brief Solicita un numero al usuario, luego de verificarlo devuelve el resultado
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param mensaje Es el mensaje a ser mostrado
+* \param mensajeError Es el mensaje de Error a ser mostrado
+* \param reintentos es el numero de reintentos que tendra el usuario
+* \return Retorna 0 si se obtuvo el numero y -1 si no
+*/
 int utn_getEntero(int* pResultado, char* mensaje, char* mensajeError, int reintentos)
 {
 	int bufferInt;
@@ -107,7 +141,13 @@ int utn_getEntero(int* pResultado, char* mensaje, char* mensajeError, int reinte
 	return retorno;
 }
 
-
+/**
+* \brief Realiza la suma de dos variables enteras.
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param x es el primer valor ingresado por el usuario
+* \param y es el segundo valor ingresado por el usuario
+* \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
+*/
 int getSuma(int* pResultado, int x, int y)
 {
 	int retorno = -1;
@@ -120,6 +160,13 @@ int getSuma(int* pResultado, int x, int y)
 	return retorno;
 }
 
+/**
+* \brief Realiza la resta de dos variables enteras.
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param x es el primer valor ingresado por el usuario
+* \param y es el segundo valor ingresado por el usuario
+* \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
+*/
 int getResta(int* pResultado, int x, int y)
 {
 	int retorno = -1;
@@ -132,6 +179,13 @@ int getResta(int* pResultado, int x, int y)
 	return retorno;
 }
 
+/**
+* \brief Realiza la multiplicacion de dos variables enteras.
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param x es el primer valor ingresado por el usuario
+* \param y es el segundo valor ingresado por el usuario
+* \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
+*/
 int getProducto(int* pResultado, int x, int y)
 {
 	int retorno = -1;
@@ -144,6 +198,13 @@ int getProducto(int* pResultado, int x, int y)
 	return retorno;
 }
 
+/**
+* \brief Realiza la division de dos variables enteras, dando un resultado flotante.
+* \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+* \param x es el primer valor ingresado por el usuario
+* \param y es el segundo valor ingresado por el usuario
+* \return Retorna 0 (EXITO) si se obtiene un numero entero y -1 (ERROR) si no
+*/
 int getCociente(float* pResultado, int x, int y)
 {
 	int retorno = -1;
