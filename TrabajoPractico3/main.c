@@ -63,13 +63,15 @@ setbuf(stdout, NULL);
     			controller_sortEmployee(listaEmpleados);
    				break;
     		case 8:
-    			controller_saveAsText("data2.csv",listaEmpleados);
+    			controller_saveAsText("data.csv",listaEmpleados);
    				break;
     		case 9:
-    			controller_saveAsBinary("data2_bin.csv",listaEmpleados);
+    			controller_saveAsBinary("data.csv",listaEmpleados);
    				break;
     		}
     	}
     }while(option != 10);
+    ll_clear(listaEmpleados);
+    ll_deleteLinkedList(listaEmpleados);
     return 0;
 }

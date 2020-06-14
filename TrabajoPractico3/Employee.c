@@ -18,6 +18,27 @@ static int esNumerica(char* cadena, int limite);
  *
  */
 static int isValidNombre(char* cadena,int longitud);
+/**
+ * \brief Realiza la modificacion del campo Nombre de un empleado especifico
+ * \param this Puntero al empleado a ser modificado
+ * \return Retorna 1 si se concreto la modificacion, o 0 en el caso contrario
+ *
+ */
+static int employee_changeNombre(Employee* this);
+/**
+ * \brief Realiza la modificacion del campo Horas Trabajadas de un empleado especifico
+ * \param this Puntero al empleado a ser modificado
+ * \return Retorna 1 si se concreto la modificacion, o 0 en el caso contrario
+ *
+ */
+static int employee_changeHorasTrabajadas(Employee* this);
+/**
+ * \brief Realiza la modificacion del campo Sueldo de un empleado especifico
+ * \param this Puntero al empleado a ser modificado
+ * \return Retorna 1 si se concreto la modificacion, o 0 en el caso contrario
+ *
+ */
+static int employee_changeSueldo(Employee* this);
 
 Employee* employee_new()
 {
@@ -250,58 +271,182 @@ void employee_printDetail(Employee* this)
 
 int employee_editDetail(Employee* this)
 {
-	printf("fede puto");
-	employee_printDetail(this);
 	int retorno=-1;
-	int bufferId;
-	char bufferNombre[NOMBRE_LEN];
-	int bufferHorasTrabajadas;
-	int bufferSueldo;
 	int opcion;
-	if( !employee_getId(this, &bufferId) &&
-		!employee_getNombre(this, bufferNombre) &&
-		!employee_getHorasTrabajadas(this, &bufferHorasTrabajadas) &&
-		!employee_getSueldo(this, &bufferSueldo))
+	int seguir;
+	if( this != NULL)
 	{
-		printf("******EMPLEADO A SER MODIFICADO********\n%d - %s - %d - %d\n",bufferId, bufferNombre, bufferHorasTrabajadas, bufferSueldo);
-		utn_getNumero(&opcion,"Que desea modificar?\n 1-Nombre\n  2-Horas Trabajadas\n  3-Sueldo\n", "Opcion invalida\n", 1, 3, 3);
-		switch(opcion)
+		printf("\n*******EMPLEADO A SER MODIFICADO*******\n");
+		employee_printDetail(this);
+		do{
+			utn_getNumero(&opcion,"\nQue desea modificar?\n 1-Nombre\n 2-Horas Trabajadas\n 3-Sueldo\n", "Opcion invalida\n", 1, 3, 3);
+			switch(opcion)
+			{
+			case 1:
+				retorno = employee_changeNombre(this);
+				break;
+			case 2:
+				retorno = employee_changeHorasTrabajadas(this);
+				break;
+			case 3:
+				retorno = employee_changeSueldo(this);
+				break;
+			}
+			utn_getNumero(&seguir,"Desea hacer otra modificacion sobre este empleado?   1- SI   0- NO\n", "Opcion invalida\n", 0, 1, 3);
+		}while(seguir);
+	}
+	return retorno;
+}
+
+int employee_confirmDelete(Employee* this)
+{
+	int retorno=-1;
+	int respuesta;
+	if( this != NULL)
+	{
+		printf("\n*******EMPLEADO A SER ELIMINADO*******\n");
+		employee_printDetail(this);
+		if(!utn_getNumero(&respuesta,"\nDesea confirmar la baja del empleado?   1- SI   0- NO\n", "respuesta invalida\n", 0, 1, 3) && respuesta)
 		{
-		case 1:
-			utn_getNombre(bufferNombre,NOMBRE_LEN,"\nIngrese el nuevo nombre: ","Nombre invalido\n",3);
-			employee_setNombre(this,bufferNombre);
-			retorno=0;
-			break;
-		case 2:
-			utn_getNumero(&bufferHorasTrabajadas,"\nIngrese la nueva cantidad de horas trabajadas: ","Numero invalido\n",1,999,3);
-			employee_setHorasTrabajadas(this,bufferHorasTrabajadas);
-			retorno=0;
-			break;
-		case 3:
-			utn_getNumero(&bufferSueldo,"\nIngrese el nuevo sueldo: ","Numero invalido\n",1,500000,3);
-			employee_setSueldo(this,bufferSueldo);
-			retorno=0;
-			break;
+			printf("\n*****BAJA CONCRETADA*****\n");
+			retorno = 0;
+		}
+		else{
+			printf("\n*****BAJA CANCELADA*****\n");
 		}
 	}
 	return retorno;
 }
 
+int employee_swapByName(void* thisA, void* thisB)
+{
+	int retorno = 0;
+	char nombreA[NOMBRE_LEN];
+	char nombreB[NOMBRE_LEN];
+	employee_getNombre(thisA, nombreA);
+	employee_getNombre(thisB, nombreB);
+
+	if(strncmp(nombreA,nombreB,NOMBRE_LEN) >0)
+	{
+		retorno = 1;
+	}
+	else if(strncmp(nombreB,nombreA,NOMBRE_LEN) >0)
+	{
+		retorno = -1;
+	}
+	return retorno;
+}
+
+int employee_swapBySalary(void* thisA, void* thisB)
+{
+	int retorno = 0;
+	int sueldoA;
+	int sueldoB;
+	employee_getSueldo(thisA, &sueldoA);
+	employee_getSueldo(thisB, &sueldoB);
+
+	if(sueldoA > sueldoB)
+	{
+		retorno = 1;
+	}
+	else if(sueldoB > sueldoA)
+	{
+		retorno = -1;
+	}
+	return retorno;
+}
+
+int employee_swapById(void* thisA, void* thisB)
+{
+	int retorno = 0;
+	int idA;
+	int idB;
+	employee_getId(thisA, &idA);
+	employee_getId(thisB, &idB);
+
+	if(idA > idB)
+	{
+		retorno = 1;
+	}
+	else if(idB > idA)
+	{
+		retorno = -1;
+	}
+	return retorno;
+}
+
+
+/***********************************************************************************************************/
 
 
 
+static int employee_changeNombre(Employee* this)
+{
+	int retorno=-1;
+	char bufferNombre[NOMBRE_LEN];
+	int opcion;
+	if(!utn_getNombre(bufferNombre,NOMBRE_LEN,"\nIngrese el nuevo Nombre: ","Nombre invalido\n",3))
+	{
+		utn_getNumero(&opcion,"\nConfirma la modificacion?  1- SI   0- NO\n", "Opcion invalida\n", 0, 1, 3);
+		if(opcion){
+			employee_setNombre(this,bufferNombre);
+			printf("\n***Modificacion exitosa***\n");
+			retorno=0;
+		}
+		else{
+			printf("\n***Modificacion cancelada***\n");
+		}
+	}
+	return retorno;
+}
 
+static int employee_changeHorasTrabajadas(Employee* this)
+{
+	int retorno=-1;
+	int bufferHorasTrabajadas;
+	int opcion;
+	if(!utn_getNumero(&bufferHorasTrabajadas,"\nIngrese la nueva cantidad de Horas Trabajadas: ","\nNumero invalido\n",0,999,3))
+	{
+		utn_getNumero(&opcion,"\nConfirma la modificacion?  1- SI   0- NO\n", "Opcion invalida\n", 0, 1, 3);
+		if(opcion){
+			employee_setHorasTrabajadas(this,bufferHorasTrabajadas);
+			printf("\n***Modificacion exitosa***\n");
+			retorno=0;
+		}
+		else{
+			printf("\n***Modificacion cancelada***\n");
+		}
+	}
+	return retorno;
+}
 
-
-
+static int employee_changeSueldo(Employee* this)
+{
+	int retorno=-1;
+	int bufferSueldo;
+	int opcion;
+	if(!utn_getNumero(&bufferSueldo,"\nIngrese el nuevo Sueldo: ","\nNumero invalido\n",1,500000,3))
+	{
+		utn_getNumero(&opcion,"\nConfirma la modificacion?  1- SI   0- NO\n", "Opcion invalida\n", 0, 1, 3);
+		if(opcion){
+			employee_setSueldo(this,bufferSueldo);
+			printf("\n***Modificacion exitosa***\n");
+			retorno=0;
+		}
+		else{
+			printf("\n***Modificacion cancelada***\n");
+		}
+	}
+	return retorno;
+}
 
 static int esNumerica(char* cadena, int limite)
 {
-	int retorno = -1; // ERROR
+	int retorno = -1;
 	int i;
 	if(cadena != NULL && limite > 0)
 	{
-		retorno = 1; // VERDADERO
+		retorno = 1;
 		for(i=0;i<limite && cadena[i] != '\0';i++)
 		{
 			if(i==0 && (cadena[i] == '+' || cadena[i] == '-'))
@@ -313,9 +458,7 @@ static int esNumerica(char* cadena, int limite)
 				retorno = 0;
 				break;
 			}
-			//CONTINUE
 		}
-		//BREAK
 	}
 	return retorno;
 }
